@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="framework_permission_external_storage">存储</string>
+    <string name="framework_permission_read_phone_state">电话</string>
+    <string name="framework_permission_camera">相机</string>
+    <string name="framework_permission_record_audio">录音</string>
+    <string name="framework_permission_access_fine_location">定位</string>
+    <string name="framework_permission_request">权限申请</string>
+    <string name="framework_permission_reject_open">暂不开启</string>
+    <string name="framework_permission_open">开启</string>
+    <string name="framework_permission_open_setting_tips">前往设置，开启[%1$s]权限，以确保应用的正常使用</string>
+    <string name="framework_permission_open_later">以后再说</string>
+    <string name="framework_permission_open_setting">去设置</string>
+</resources>

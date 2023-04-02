@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="framework_permission_dialog_bg_color">#FFFFFF</color>
+    <!-- 白色按钮点击颜色 -->
+    <color name="framework_permission_dialog_btn_press_color">#EEEEEE</color>
+    <!-- 分割线 -->
+    <color name="framework_permission_divider_color">#EEEEEE</color>
+    <!-- 默认字体颜色 -->
+    <color name="framework_permission_text_normal_color">#333333</color>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="framework_ui_loading_more">正在加载更多&#8230;</string>
+    <string name="framework_ui_load_failure">加载失败，点击重试</string>
+    <string name="framework_ui_load_end">没有更多了</string>
+</resources>

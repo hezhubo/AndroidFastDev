@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="265dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/framework_permission_xml_shape_dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="@string/framework_permission_request"
+        android:textColor="@color/framework_permission_text_normal_color"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="17dp"
+        android:gravity="center"
+        android:textColor="@color/framework_permission_text_normal_color"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/v_horizontal_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/tv_content"
+        android:background="@color/framework_permission_divider_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/v_horizontal_divider">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/framework_permission_xml_shape_dialog_cancel_btn_bg"
+            android:gravity="center"
+            android:text="@string/framework_permission_reject_open"
+            android:textColor="@color/framework_permission_text_normal_color"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/framework_permission_divider_color" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/framework_permission_xml_shape_dialog_confirm_btn_bg"
+            android:gravity="center"
+            android:text="@string/framework_permission_open"
+            android:textColor="@color/framework_permission_text_normal_color"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>
