@@ -41,6 +41,7 @@ object Config {
         val retrofit2 = "com.squareup.retrofit2:retrofit:2.6.4" // 2.7.0开始最低要求API21以上
         val retrofit2_converter_gson = "com.squareup.retrofit2:converter-gson:2.6.4"
         val gson = "com.google.code.gson:gson:2.10.1"
+        val eventbus = "org.greenrobot:eventbus:3.3.1"
 
         val glide = "com.github.bumptech.glide:glide:4.15.1"
         val glide_compiler = "com.github.bumptech.glide:compiler:4.15.1" // 自定义AppGlideModule时使用

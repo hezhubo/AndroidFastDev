@@ -1,6 +1,6 @@
 package com.hezb.framework.network
 
-import android.util.Log
+import com.hezb.framework.utils.LogUtil
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -28,7 +28,7 @@ class HeaderInterceptor : Interceptor {
                 builder.addHeader(key, value)
             }
         }
-        Log.d("Request", chain.request().url().toString())
+        LogUtil.d(chain.request().url().toString())
         return chain.proceed(builder.build())
     }
 

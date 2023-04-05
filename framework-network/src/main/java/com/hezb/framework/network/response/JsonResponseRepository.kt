@@ -1,11 +1,11 @@
 package com.hezb.framework.network.response
 
-import android.util.Log
 import com.google.gson.*
 import com.hezb.framework.base.AppManager
 import com.hezb.framework.network.R
 import com.hezb.framework.network.RequestException
 import com.hezb.framework.repository.IRepository
+import com.hezb.framework.utils.LogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,8 +21,6 @@ import kotlinx.coroutines.withContext
  * @date    2023年03月24日 18:55
  */
 abstract class JsonResponseRepository<T> : IRepository {
-
-    protected var TAG = "Response"
 
     /**
      * Gson实例，方便子类做数据解析
@@ -53,7 +51,7 @@ abstract class JsonResponseRepository<T> : IRepository {
         onSuccess: () -> Unit,
         onFailure: (e: RequestException) -> Unit
     ) {
-        Log.d(TAG, response.toString())
+        LogUtil.d("json response : \n${gson.toJson(response)}")
         if (checkResponseToParse(response)) {
             val exception: RequestException? = if (response.result is JsonElement) {
                 withContext(Dispatchers.Default) {
@@ -69,7 +67,7 @@ abstract class JsonResponseRepository<T> : IRepository {
                         }
                         return@withContext null
                     } catch (e: Exception) {
-                        Log.e(TAG, "parse data error!", e)
+                        LogUtil.e("json response parse data error!", e)
                         return@withContext getCustomException(
                             null,
                             RequestException.CODE_DATA_PARSE_ERROR,
@@ -127,7 +125,7 @@ abstract class JsonResponseRepository<T> : IRepository {
             } ?: throw NullPointerException("response null!")
 
         } catch (e: Exception) {
-            Log.e(TAG, "request error!", e)
+            LogUtil.e("request error!", e)
             if (hasLocalData()) { // 加载本地缓存数据
                 try {
                     val localResponse = withContext(Dispatchers.IO) {

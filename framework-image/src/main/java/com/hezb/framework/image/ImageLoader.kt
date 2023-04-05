@@ -25,6 +25,8 @@ object ImageLoader {
      *
      * @param options 额外的加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     fun getImageOptions(options: (ImageOptions.Builder.() -> Unit)? = null): ImageOptions {
         return if (options == null) {
             defaultOptions
@@ -40,6 +42,8 @@ object ImageLoader {
      * @param url 图片地址
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     fun load(
         imageView: ImageView,
         url: String?,
@@ -56,6 +60,8 @@ object ImageLoader {
      * @param requestListener 加载监听器
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     inline fun <reified ResourceType> load(
         imageView: ImageView,
         url: String?,
@@ -73,6 +79,8 @@ object ImageLoader {
      * @param url 图片地址
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     fun load(
         fragment: Fragment,
         imageView: ImageView,
@@ -91,6 +99,8 @@ object ImageLoader {
      * @param requestListener 加载监听器
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     inline fun <reified ResourceType> load(
         fragment: Fragment,
         imageView: ImageView,
@@ -109,6 +119,8 @@ object ImageLoader {
      * @param requestListener 图片加载监听器
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     fun loadBitmap(
         context: Context,
         url: String?,
@@ -125,6 +137,8 @@ object ImageLoader {
      * @param url 图片地址
      * @param options 加载参数
      */
+    @JvmStatic
+    @JvmOverloads
     fun loadBitmapSync(
         context: Context,
         url: String?,

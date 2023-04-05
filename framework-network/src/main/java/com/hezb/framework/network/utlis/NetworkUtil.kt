@@ -5,10 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
+import com.hezb.framework.base.AppManager
 import com.hezb.framework.network.NetworkState
+import com.hezb.framework.network.R
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -34,13 +38,33 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun getNetworkState(context: Context?): NetworkState {
-        (context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo?.let { networkInfo ->
-            if (networkInfo.isConnected) {
-                return when (networkInfo.type) {
-                    ConnectivityManager.TYPE_WIFI -> NetworkState.WIFI
-                    ConnectivityManager.TYPE_MOBILE -> NetworkState.MOBILE
-                    else -> NetworkState.OTHER
+        (context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.let { connectivityManager ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                connectivityManager.activeNetwork?.let { network ->
+                    connectivityManager.getNetworkCapabilities(network)
+                        ?.let { networkCapabilities ->
+                            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+                                return if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                                    NetworkState.WIFI
+                                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                                    NetworkState.MOBILE
+                                } else {
+                                    NetworkState.OTHER
+                                }
+                            }
+                        }
+                }
+            } else {
+                connectivityManager.activeNetworkInfo?.let { networkInfo ->
+                    if (networkInfo.isConnected) {
+                        return when (networkInfo.type) {
+                            ConnectivityManager.TYPE_WIFI -> NetworkState.WIFI
+                            ConnectivityManager.TYPE_MOBILE -> NetworkState.MOBILE
+                            else -> NetworkState.OTHER
+                        }
+                    }
                 }
             }
         }
@@ -53,9 +77,18 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun hasConnect(context: Context?): Boolean {
-        return (context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo?.isAvailable
-            ?: false
+        return (context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.let { connectivityManager ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val network = connectivityManager.activeNetwork ?: return@let false
+                val networkCapabilities =
+                    connectivityManager.getNetworkCapabilities(network) ?: return@let false
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            } else {
+                connectivityManager.activeNetworkInfo?.isAvailable ?: false
+            }
+        } ?: false
     }
 
     /**
@@ -64,26 +97,13 @@ object NetworkUtil {
      * @param context
      * @return NONE, MOBILE(移动网络类型), WIFI, UNKNOWN
      */
+    @JvmStatic
     fun getNetworkType(context: Context?): String {
-        var networkType: String = NetworkState.OTHER.text
-        (context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo?.let { networkInfo ->
-            if (networkInfo.isConnected) {
-                val type = networkInfo.typeName // WIFI  MOBILE  NONE
-                if (NetworkState.WIFI.text.equals(type, ignoreCase = true)) {
-                    networkType = NetworkState.WIFI.text
-                } else if (NetworkState.MOBILE.text.equals(type, ignoreCase = true)) {
-                    val proxyHost = android.net.Proxy.getDefaultHost()
-                    networkType = if (proxyHost.isNullOrEmpty()) {
-                        mobileNetworkType(context)
-                    } else {
-                        NetworkState.MOBILE.text
-                    }
-                }
-            } else {
-                networkType = NetworkState.NONE.text
-            }
+        val networkState = getNetworkState(context)
+        if (networkState == NetworkState.MOBILE) {
+            return mobileNetworkType(context!!)
         }
-        return networkType
+        return networkState.text
     }
 
     /**
@@ -92,16 +112,18 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun getMobileOperator(context: Context?): String {
         context?.let {
             return when (getMobileOperatorCode(it)) {
-                "46000", "46002", "46007" -> "中国移动"
-                "46001" -> "中国联通"
-                "46003" -> "中国电信"
-                else -> "未知运营商"
+                "46000", "46002", "46007" -> it.getString(R.string.framework_network_china_mobile)
+                "46001" -> it.getString(R.string.framework_network_china_unicom)
+                "46003" -> it.getString(R.string.framework_network_china_telecom)
+                else -> it.getString(R.string.framework_network_unknown_operator)
             }
         }
-        return "未知运营商"
+        return AppManager.INSTANCE.getApplication()
+            .getString(R.string.framework_network_unknown_operator)
     }
 
     /**
@@ -110,6 +132,7 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun getMobileOperatorCode(context: Context?): String? {
         context?.applicationContext?.let {
             try {
@@ -127,6 +150,7 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     fun getNetworkCountryIso(context: Context?): String? {
         context?.applicationContext?.let {
             try {
@@ -141,6 +165,7 @@ object NetworkUtil {
     /**
      * 获取本机IP(wifi)
      */
+    @JvmStatic
     fun getLocalIpByWifi(context: Context?): String? {
         context?.applicationContext?.let {
             try {
@@ -163,6 +188,7 @@ object NetworkUtil {
     /**
      * 获取本机IP(2G/3G/4G)
      */
+    @JvmStatic
     fun getLocalIpByMobile(): String? {
         try {
             val en = NetworkInterface.getNetworkInterfaces()
@@ -187,6 +213,7 @@ object NetworkUtil {
     /**
      * wifi状态下获取网关
      */
+    @JvmStatic
     fun pingGatewayInWifi(context: Context?): String? {
         context?.applicationContext?.let {
             try {
@@ -209,6 +236,7 @@ object NetworkUtil {
     /**
      * 获取本地DNS
      */
+    @JvmStatic
     fun getLocalDns(dns: String): String {
         var process: Process? = null
         var str = ""
@@ -238,6 +266,7 @@ object NetworkUtil {
     /**
      * 域名解析
      */
+    @JvmStatic
     fun getDomainIp(domain: String): Map<String, Any> {
         val map = HashMap<String, Any>()
         var start: Long = 0
@@ -272,6 +301,7 @@ object NetworkUtil {
      * @param context
      * @return
      */
+    @JvmStatic
     @SuppressLint("MissingPermission")
     private fun mobileNetworkType(context: Context): String {
         if (ContextCompat.checkSelfPermission(
@@ -314,6 +344,8 @@ object NetworkUtil {
                     -> "2G"
                     TelephonyManager.NETWORK_TYPE_LTE // ~ 10+ Mbps
                     -> "4G"
+                    TelephonyManager.NETWORK_TYPE_NR
+                    -> "5G"
                     else -> NetworkState.MOBILE.text
                 }
             } ?: NetworkState.MOBILE.text

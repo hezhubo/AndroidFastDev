@@ -30,6 +30,7 @@ object PermissionUtil {
      * @param permission 权限
      * @return
      */
+    @JvmStatic
     fun getPermissionName(context: Context, permission: String): String {
         return when (permission) {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -61,6 +62,7 @@ object PermissionUtil {
      * @param permissions 权限集合
      * @return
      */
+    @JvmStatic
     fun getPermissionName(context: Context, permissions: MutableList<String>): String {
         if (permissions.isEmpty()) {
             return ""
@@ -82,6 +84,7 @@ object PermissionUtil {
      * @param permission 需要检查的权限名
      * @return 是否缺少该权限
      */
+    @JvmStatic
     fun lackPermission(context: Context, permission: String): Boolean {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             false
@@ -96,9 +99,9 @@ object PermissionUtil {
      *
      * @param context
      * @param permissions
-     *
      * @return
      */
+    @JvmStatic
     fun isAllGranted(context: Context, permissions: Array<String>): Boolean {
         if (permissions.isNotEmpty()) {
             for (permission in permissions) {
@@ -111,10 +114,12 @@ object PermissionUtil {
     }
 
     /**
-     * 跳转系统应用设置页intent
+     * 创建跳转系统应用设置页intent
      *
      * @param context
+     * @return
      */
+    @JvmStatic
     fun enterSettingIntent(context: Context): Intent {
         val intent = Intent()
         intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -123,8 +128,12 @@ object PermissionUtil {
     }
 
     /**
-     * 跳转允许安装未知源应用设置页intent
+     * 创建跳转允许安装未知源应用设置页intent
+     *
+     * @param context
+     * @return
      */
+    @JvmStatic
     @RequiresApi(Build.VERSION_CODES.O)
     fun enterInstallPackagesIntent(context: Context): Intent {
         val intent = Intent()
@@ -138,7 +147,9 @@ object PermissionUtil {
      *
      * @param context
      * @param tips    提示语
+     * @return
      */
+    @JvmStatic
     private fun createPermissionGuideDialog(context: Context, tips: String): PermissionDialog {
         return PermissionDialog(
             context,
@@ -157,6 +168,8 @@ object PermissionUtil {
      * @param dialogCallback
      * @param cancelable     能否按返回键关闭弹窗
      */
+    @JvmStatic
+    @JvmOverloads
     fun showPermissionGuideDialog(
         context: Context,
         permission: String,
@@ -177,6 +190,8 @@ object PermissionUtil {
      * @param dialogCallback
      * @param cancelable     能否按返回键关闭弹窗
      */
+    @JvmStatic
+    @JvmOverloads
     fun showPermissionGuideDialog(
         context: Context,
         permissions: MutableList<String>,
@@ -222,6 +237,8 @@ object PermissionUtil {
      *
      * @return 弹窗实例，若为null则无需申请权限
      */
+    @JvmStatic
+    @JvmOverloads
     fun checkPermissionRequest(
         context: Context,
         tips: String,
@@ -260,6 +277,8 @@ object PermissionUtil {
      * @param permissions
      * @param iPermissionCallback
      */
+    @JvmStatic
+    @JvmOverloads
     fun requestPermissionCallback(
         fragmentActivity: FragmentActivity,
         permissions: Array<String>,
@@ -279,6 +298,8 @@ object PermissionUtil {
      * @param permissions
      * @param iPermissionCallback
      */
+    @JvmStatic
+    @JvmOverloads
     fun goSettingGrantPermissions(
         fragmentActivity: FragmentActivity,
         permissions: Array<String>,
@@ -297,6 +318,8 @@ object PermissionUtil {
      * @param fragmentActivity
      * @param iPermissionCallback
      */
+    @JvmStatic
+    @JvmOverloads
     fun goSettingGrantInstallPackage(
         fragmentActivity: FragmentActivity,
         iPermissionCallback: IPermissionCallback? = null

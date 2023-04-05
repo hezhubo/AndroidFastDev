@@ -1,6 +1,6 @@
 package com.hezb.framework.network.download
 
-import android.util.Log
+import com.hezb.framework.utils.LogUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
@@ -46,7 +46,7 @@ suspend fun ResponseBody.writeToFile(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("download", "parent file mkdirs error!", e)
+                LogUtil.e("parent file mkdirs error!", e)
             }
 
             val fileReader = ByteArray(4096)
@@ -80,7 +80,7 @@ suspend fun ResponseBody.writeToFile(
 
             downloadFile.length() == fileSize
         } catch (e: IOException) {
-            Log.e("download", "write error!", e)
+            LogUtil.e( "write error!", e)
             false
         }
     }

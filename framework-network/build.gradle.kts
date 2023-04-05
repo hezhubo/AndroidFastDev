@@ -30,4 +30,5 @@ dependencies {
 
     api(Config.Libs.retrofit2)
     implementation(Config.Libs.retrofit2_converter_gson)
+    implementation(Config.Libs.eventbus)
 }

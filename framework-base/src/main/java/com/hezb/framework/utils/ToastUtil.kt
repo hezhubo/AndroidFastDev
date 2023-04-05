@@ -18,6 +18,8 @@ object ToastUtil {
 
     private var mToastWeakReference: WeakReference<Toast>? = null
 
+    @JvmStatic
+    @JvmOverloads
     fun show(
         context: Context?,
         stringId: Int,
@@ -31,6 +33,8 @@ object ToastUtil {
         }
     }
 
+    @JvmStatic
+    @JvmOverloads
     fun show(
         context: Context?,
         msg: String?,
@@ -53,6 +57,7 @@ object ToastUtil {
         }
     }
 
+    @JvmStatic
     fun cancel() {
         mToastWeakReference?.let {
             it.get()?.cancel()

@@ -5,4 +5,8 @@
     <string name="framework_network_connect_error">网络连接失败</string>
     <string name="framework_network_timeout_error">网络连接超时</string>
     <string name="framework_network_unknown_error">网络出现未知错误</string>
+    <string name="framework_network_china_mobile">中国移动</string>
+    <string name="framework_network_china_unicom">中国联通</string>
+    <string name="framework_network_china_telecom">中国电信</string>
+    <string name="framework_network_unknown_operator">未知运营商</string>
 </resources>

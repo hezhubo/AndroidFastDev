@@ -30,10 +30,6 @@ import java.io.File
  * @author  hezhubo
  * @date    2023年03月28日 15:49
  */
-
-@kotlin.annotation.Target(AnnotationTarget.TYPE_PARAMETER)
-annotation class FLAG
-
 object GlideHelper {
 
     /**
@@ -44,6 +40,7 @@ object GlideHelper {
      * @param source 图片源
      * @return
      */
+    @JvmStatic
     inline fun <reified ResourceType> getRequestBuilder(
         requestManager: RequestManager,
         source: Any?
@@ -85,6 +82,7 @@ object GlideHelper {
      * @param options 配置项
      * @return
      */
+    @JvmStatic
     fun <ResourceType> setBuilderOption(requestBuilder: RequestBuilder<ResourceType>, options: ImageOptions) : RequestBuilder<ResourceType> {
         var builder = when (options.diskCacheType) {
             ImageOptions.DiskCacheType.ALL -> {
@@ -187,6 +185,7 @@ object GlideHelper {
      * @param requestListener 加载监听器
      * @return
      */
+    @JvmStatic
     fun <ResourceType> setRequestListener(
         requestBuilder: RequestBuilder<ResourceType>,
         requestListener: ImageLoader.ImageRequestListener<ResourceType>
@@ -218,6 +217,7 @@ object GlideHelper {
         })
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         context: Context,
         imageView: ImageView,
@@ -228,6 +228,7 @@ object GlideHelper {
         load(Glide.with(context), imageView, source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         activity: FragmentActivity,
         imageView: ImageView,
@@ -238,6 +239,7 @@ object GlideHelper {
         load(Glide.with(activity), imageView, source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         fragment: Fragment,
         imageView: ImageView,
@@ -248,6 +250,7 @@ object GlideHelper {
         load(Glide.with(fragment), imageView, source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         imageView: ImageView,
         source: Any?,
@@ -257,6 +260,7 @@ object GlideHelper {
         load(Glide.with(imageView), imageView, source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         requestManager: RequestManager,
         imageView: ImageView,
@@ -272,6 +276,7 @@ object GlideHelper {
         builder.into(imageView)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         context: Context,
         target: Target<ResourceType>,
@@ -282,6 +287,7 @@ object GlideHelper {
         load(Glide.with(context), target, source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> load(
         requestManager: RequestManager,
         target: Target<ResourceType>,
@@ -297,6 +303,7 @@ object GlideHelper {
         builder.into(target)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType : Any> load(
         context: Context,
         source: Any?,
@@ -306,6 +313,7 @@ object GlideHelper {
         return load(Glide.with(context), source, options, requestListener)
     }
 
+    @JvmStatic
     inline fun <reified ResourceType : Any> load(
         requestManager: RequestManager,
         source: Any?,
@@ -337,6 +345,7 @@ object GlideHelper {
         })
     }
 
+    @JvmStatic
     inline fun <reified ResourceType> loadSync(
         context: Context,
         source: Any?,
@@ -365,6 +374,7 @@ object GlideHelper {
      *
      * @param view
      */
+    @JvmStatic
     fun clear(view: View) {
         Glide.with(view).clear(view)
     }
@@ -374,6 +384,7 @@ object GlideHelper {
      *
      * @param context
      */
+    @JvmStatic
     fun clearMemory(context: Context) {
         Glide.get(context).clearMemory()
     }
@@ -383,6 +394,7 @@ object GlideHelper {
      *
      * @param context
      */
+    @JvmStatic
     fun clearDiskCache(context: Context) {
         Glide.get(context).clearDiskCache()
     }
