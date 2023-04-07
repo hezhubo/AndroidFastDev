@@ -13,11 +13,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = Config.jvmTargetVersion
+        freeCompilerArgs = listOf("-Xcontext-receivers")
     }
 }
 
 dependencies {
     implementation(project(":framework-base"))
+    implementation(Config.Libs.appcompat)
 
     api(Config.Libs.recyclerview)
     api(Config.Libs.swiperefreshlayout)

@@ -45,3 +45,56 @@ fun View.setOnSingleClickListener(minInterval: Long = 1000, onSingleClick: (v: V
 fun <T : View> RecyclerView.ViewHolder.findViewById(@IdRes id: Int): T? {
     return itemView.findViewById(id)
 }
+
+/*
+ * Context Receivers
+ * 1.6.20新增实验功能，开启需要配置 kotlinOptions 的 freeCompilerArgs = listOf("-Xcontext-receivers")
+ * 上下文接收器，限定执行方法的上下文
+ */
+/**
+ * dp 转 px
+ * 返回Float
+ */
+context(View)
+val Float.dp
+    get() = this * resources.displayMetrics.density
+
+context(View)
+val Int.dp
+    get() = this.toFloat().dp
+
+/**
+ * dp 转 px
+ * 返回Int 四舍五入计算px整数
+ */
+context(View)
+val Float.dp2px
+    get() = (this.dp + 0.5).toInt()
+
+context(View)
+val Int.dp2px
+    get() = this.toFloat().dp2px
+
+/**
+ * sp 转 px
+ * 返回Float
+ */
+context(View)
+val Float.sp
+    get() = this * resources.displayMetrics.scaledDensity
+
+context(View)
+val Int.sp
+    get() = this.toFloat().sp
+
+/**
+ * sp 转 px
+ * 返回Int 四舍五入计算px整数
+ */
+context(View)
+val Float.sp2px
+    get() = (this.sp + 0.5).toInt()
+
+context(View)
+val Int.sp2px
+    get() = this.toFloat().sp2px
