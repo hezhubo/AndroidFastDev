@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation(Config.Libs.kotlin_stdlib)
+    implementation(project(":framework-base"))
     implementation(Config.Libs.core_ktx)
     implementation(Config.Libs.appcompat)
     implementation(Config.Libs.lifecycle_runtime_ktx)

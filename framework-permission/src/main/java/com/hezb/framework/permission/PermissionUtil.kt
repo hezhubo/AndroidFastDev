@@ -24,7 +24,7 @@ import androidx.fragment.app.FragmentActivity
 object PermissionUtil {
 
     /**
-     * 获取权限中文名
+     * 获取权限名称
      *
      * @param context
      * @param permission 权限
@@ -49,6 +49,9 @@ object PermissionUtil {
             Manifest.permission.ACCESS_FINE_LOCATION -> {
                 context.getString(R.string.framework_permission_access_fine_location)
             }
+            Manifest.permission.SYSTEM_ALERT_WINDOW -> {
+                context.getString(R.string.framework_permission_system_alert_window)
+            }
             else -> {
                 permission.removePrefix("android.permission.")
             }
@@ -56,7 +59,7 @@ object PermissionUtil {
     }
 
     /**
-     * 获取权限中文名
+     * 获取权限名称组
      *
      * @param context
      * @param permissions 权限集合
