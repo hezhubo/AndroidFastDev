@@ -4,8 +4,11 @@ import android.content.Context
 import android.net.Uri
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -41,7 +44,7 @@ object FileUtil {
                 srcFile.delete()
             }
             return true
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             LogUtil.e("copy file error!", e)
         }
         return false
@@ -92,7 +95,7 @@ object FileUtil {
      *
      * @param destFile 目标存储文件
      * @param content 写入内容
-     * @param content 是否为追加写入
+     * @param append 是否为追加写入
      * @return
      */
     @JvmStatic
@@ -150,7 +153,56 @@ object FileUtil {
     }
 
     /**
-     * 解zip文件到指定目录
+     * 保存序列化对象
+     *
+     * @param destFile 目标存储文件
+     * @param data 序列化对象
+     * @return
+     */
+    fun saveSerializable(destFile: File, data: java.io.Serializable): Boolean {
+        try {
+            if (!destFile.exists()) {
+                destFile.parentFile?.let {
+                    if (!it.exists()) {
+                        it.mkdirs()
+                    }
+                }
+            } else {
+                destFile.delete()
+            }
+            destFile.createNewFile()
+            return ObjectOutputStream(FileOutputStream(destFile)).use {
+                it.writeObject(data)
+                true
+            }
+        } catch (e: Exception) {
+            LogUtil.e("save serializable error!", e)
+        }
+        return false
+    }
+
+    /**
+     * 从路径中读取序列化对象
+     *
+     * @param path 序列化文件路径
+     * @return
+     */
+    fun readSerializable(path: String): java.io.Serializable? {
+        val file = File(path)
+        if (file.exists() && file.length() > 0) {
+            try {
+                return ObjectInputStream(FileInputStream(file)).use {
+                    it.readObject() as java.io.Serializable
+                }
+            } catch (e: Exception) {
+                LogUtil.e("read serializable error!", e)
+            }
+        }
+        return null
+    }
+
+    /**
+     * 解压zip文件到指定目录
      *
      * @param zipFile 压缩包路径
      * @param dstDirectory 目标目录文件
@@ -159,7 +211,7 @@ object FileUtil {
      */
     @JvmStatic
     @Throws(IOException::class)
-    fun unzipFile(zipFile: File, dstDirectory: File) : Boolean {
+    fun unzipFile(zipFile: File, dstDirectory: File): Boolean {
         val zip = ZipFile(zipFile)
         val dstPath = dstDirectory.absolutePath
         val entries: Enumeration<*> = zip.entries()
